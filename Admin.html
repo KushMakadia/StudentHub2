@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentHub - Admin</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="logo.png" alt="StudentHub Logo" class="logo">
+                <h2 class="site-title">StudentHub</h2>
+            
+        <button class="menu-toggle"
+                aria-label="Open navigation menu"
+                aria-expanded="false">
+            ☰
+        </button>
+
+            </div>
+            <nav class="navbar">
+                <a href="index.html" class="active">Home</a>
+                <a href="Register.html">Register</a>
+                <a href="Login.html">Login</a>
+                <a href="Profile.html">Profile</a>
+                <a href="Dashboard.html">Dashboard</a>
+                <a href="FAQ.html">FAQs</a>
+                <a href="Events.html">Events</a>
+                <a href="Contact_Us.html">Contact Us</a>
+                <a href="About_Us.html">About Us</a>
+                <a href="Admin.html">Admin</a>
+            </nav>
+
+       <button id="theme-toggle"
+                class="theme-btn"
+                aria-label="Toggle light and dark theme">
+            🌙
+        </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <section class="admin-header">
+            <h1>Admin Dashboard</h1>
+            <p>Manage students, events, feedback and StudentHub activities.</p>
+        </section>
+
+        <section class="admin-stats">
+
+            <div class="admin-stat-card">
+                <h2>245</h2>
+                <p>Total Students</p>
+            </div>
+
+            <div class="admin-stat-card">
+                <h2>12</h2>
+                <p>Upcoming Events</p>
+            </div>
+
+            <div class="admin-stat-card">
+                <h2>18</h2>
+                <p>Pending Feedback</p>
+            </div>
+
+            <div class="admin-stat-card">
+                <h2>8</h2>
+                <p>New Registrations</p>
+            </div>
+
+        </section>
+
+        <section class="admin-content">
+
+            <div class="admin-card">
+
+                <h2>Student Management</h2>
+
+                <p>
+                    View registered students and manage their
+                    StudentHub accounts.
+                </p>
+
+                <a href="#" class="btn">Manage Students</a>
+
+            </div>
+
+            <div class="admin-card">
+
+                <h2>Event Management</h2>
+
+                <p>
+                    Add, update or remove campus events
+                    displayed on StudentHub.
+                </p>
+
+                <a href="Events.html" class="btn">Manage Events</a>
+
+            </div>
+
+            <div class="admin-card">
+
+                <h2>Feedback</h2>
+
+                <p>
+                    Review feedback submitted by students
+                    and respond to their queries.
+                </p>
+
+                <a href="#" class="btn">View Feedback</a>
+
+            </div>
+
+            <div class="admin-card">
+
+                <h2>Announcements</h2>
+
+                <p>
+                    Create announcements and share important
+                    information with students.
+                </p>
+
+                <a href="#" class="btn">Create Announcement</a>
+
+            </div>
+
+        </section>
+
+        <section class="recent-activity">
+
+            <h2>Recent Activity</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Activity</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Rahul Shah</td>
+                        <td>Registered for Technical Quiz</td>
+                        <td>10 Aug 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>Priya Patel</td>
+                        <td>Updated Profile</td>
+                        <td>10 Aug 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>Dev Mehta</td>
+                        <td>Submitted Feedback</td>
+                        <td>09 Aug 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>Neha Desai</td>
+                        <td>Registered New Account</td>
+                        <td>09 Aug 2026</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 StudentHub. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
