@@ -6,4 +6,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     $usernm = $_POST['usernm'] ?? '';
     echo $fullnm." ".$email." ".$usernm;
 }
+
+
+
 ?>
