@@ -1,0 +1,7 @@
+STUDENTHUB — ALL PRACTICALS 1–14
+
+1. Read README.md.
+2. Read docs/ALL_PRACTICALS.md for the practical-by-practical mapping.
+3. For frontend-only work, run the project through Live Server.
+4. For PHP/MySQL work, use XAMPP and import database/studenthub.sql.
+5. Use the php/ and api/ folders for backend practicals.

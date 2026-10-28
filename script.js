@@ -259,3 +259,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+/* ==========================================
+   7. ACTIVE NAVIGATION LINK
+   ========================================== */
+
+const currentPage = window.location.pathname.split("/").pop().toLowerCase();
+
+const navLinks = document.querySelectorAll(".navbar a");
+
+navLinks.forEach(function (link) {
+
+    const linkPage = link.getAttribute("href").split("/").pop().toLowerCase();
+
+    if (linkPage === currentPage) {
+        link.classList.add("active");
+    } else {
+        link.classList.remove("active");
+    }
+
+});
