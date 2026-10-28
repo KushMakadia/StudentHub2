@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Practical 13 Fetch API</title>
+</head>
+
+<body>
+    <h2>Practical 13: Events using Fetch</h2>
+    <form id="f"><input id="title" placeholder="Event title" required><input id="date" type="date" required><input
+            id="location" placeholder="Location" required><button>Add event</button></form>
+    <p id="msg"></p><button onclick="loadEvents()">Refresh</button>
+    <ul id="list"></ul>
+    <script>
+        const api = 'api.php'; async function loadEvents() { let r = await fetch(api); let events = await r.json(); document.getElementById('list').innerHTML = ''; events.forEach(e => { let li = document.createElement('li'); li.textContent = e.title + ' - ' + e.event_date + ' - ' + e.location; document.getElementById('list').appendChild(li); }); }
+        document.getElementById('f').onsubmit = async ev => { ev.preventDefault(); let r = await fetch(api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: title.value, event_date: date.value, location: location.value }) }); let d = await r.json(); msg.textContent = d.message || 'Done'; loadEvents(); }; loadEvents();</script>
+</body>
+
+</html>

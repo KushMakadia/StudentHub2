@@ -1,79 +1,193 @@
 <?php
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    ini_set('session.use_strict_mode', '1');
+// Start the session
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+// Connect to the database using parent config.php
 require_once __DIR__ . '/config.php';
-function e($value): string
+
+
+// Convert special characters into safe HTML
+function e($value)
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
-function redirect(string $url): never
+
+
+// Redirect to another page
+function redirect($url)
 {
-    header('Location: ' . $url);
+    header("Location: " . $url);
     exit;
 }
-function set_flash(string $message, string $type = 'success'): void
+
+
+// Store a message to display on the next page
+function set_flash($message, $type = 'success')
 {
-    $_SESSION['_flash'] = ['message' => $message, 'type' => $type];
+    $_SESSION['message'] = $message;
+    $_SESSION['message_type'] = $type;
 }
-function page_start(string $title): void
+
+
+// Display the beginning of an HTML page
+function page_start($title)
 {
-    $flash = $_SESSION['_flash'] ?? null;
-    unset($_SESSION['_flash']);
-    echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>' . e($title) . '</title><style>
-    *{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f1f5f9;color:#172033}header{background:#1d4ed8;color:white;padding:18px 24px}header a{color:white;margin-right:14px}main{max-width:1100px;margin:24px auto;padding:24px;background:white;border-radius:12px;box-shadow:0 4px 16px #0000000d}h1,h2{margin-top:0}label{display:block;margin:14px 0 6px;font-weight:600}input,select,textarea{font:inherit;padding:10px;width:100%;border:1px solid #cbd5e1;border-radius:6px;margin-bottom:8px}button,.btn{display:inline-block;background:#2563eb;color:white;border:0;padding:10px 14px;border-radius:6px;text-decoration:none;cursor:pointer;margin:4px 3px 4px 0}button.danger{background:#b91c1c}.flash{padding:12px;border-radius:6px;margin:12px 0}.success{background:#dcfce7;color:#166534}.error{background:#fee2e2;color:#991b1b}table{width:100%;border-collapse:collapse;margin:18px 0;display:block;overflow-x:auto}th,td{padding:10px;border:1px solid #e2e8f0;text-align:left}th{background:#eff6ff}.inline{display:inline}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.stat{background:#eff6ff;padding:18px;border-radius:8px}.stat strong{display:block;font-size:28px;margin-bottom:5px}.actions{display:flex;gap:8px;flex-wrap:wrap}footer{text-align:center;padding:20px;color:#64748b}
-    </style></head><body><header><strong>StudentHub</strong> &nbsp; <a href="../Practical_3_Responsive_CSS/index.html">Home</a>';
-    if (!empty($_SESSION['student_id'])) {
-        echo '<a href="../Practical_10_Secure_Login/dashboard.php">Dashboard</a>';
-        if (($_SESSION['role'] ?? 'student') === 'admin')
-            echo '<a href="../Practical_14_Admin_Dashboard/index.php">Admin</a>';
-        echo '<span style="float:right">' . e($_SESSION['name'] ?? '') . '</span>';
+
+    echo '<!DOCTYPE html>
+    <html>
+    <head>
+        <title>' . e($title) . '</title>
+        <meta charset="UTF-8">
+        <style>
+            body {
+                font-family: Arial;
+                margin: 30px;
+                background: #f2f2f2;
+            }
+
+            main {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+            }
+
+            input, select, textarea {
+                padding: 8px;
+                margin: 5px 0;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            button, .btn {
+                padding: 10px;
+                background: blue;
+                color: white;
+                border: none;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                padding: 10px;
+                border: 1px solid gray;
+                text-align: left;
+            }
+
+            .success {
+                color: green;
+            }
+
+            .error {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+
+    <h2>StudentHub</h2>
+    <main>
+    <h1>' . e($title) . '</h1>';
+
+    // Display any saved message
+    if (isset($_SESSION['message'])) {
+
+        $type = $_SESSION['message_type'];
+
+        echo '<p class="' . e($type) . '">'
+            . e($_SESSION['message']) . '</p>';
+
+        // Remove the message after displaying it
+        unset($_SESSION['message']);
+        unset($_SESSION['message_type']);
     }
-    echo '</header><main><h1>' . e($title) . '</h1>';
-    if ($flash)
-        echo '<div class="flash ' . e($flash['type']) . '">' . e($flash['message']) . '</div>';
 }
-function page_end(): void
+
+
+// Display the end of the HTML page
+function page_end()
 {
-    echo '</main><footer>StudentHub — PHP & MySQL practical project</footer></body></html>';
+
+    echo '</main>
+    <p>StudentHub - PHP and MySQL Project</p>
+    </body>
+    </html>';
 }
-function require_login(): void
+
+
+// Check whether the user is logged in
+function require_login()
 {
-    if (empty($_SESSION['student_id'])) {
-        set_flash('Please log in to continue.', 'error');
+
+    if (!isset($_SESSION['student_id'])) {
+
+        set_flash('Please log in first.', 'error');
+
         redirect('../Practical_10_Secure_Login/login.php');
     }
-    $timeout = 1800;
-    $last = (int) ($_SESSION['last_activity'] ?? 0);
-    if (!$last || time() - $last > $timeout) {
+
+    // Allow the session to remain inactive for 30 minutes
+    if (
+        isset($_SESSION['last_activity']) &&
+        time() - $_SESSION['last_activity'] > 1800
+    ) {
+
+        // Clear session data
         $_SESSION = [];
-        if (ini_get('session.use_cookies')) {
-            $p = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000, $p['path'], $p['domain'], $p['secure'], $p['httponly']);
-        }
+
+        // Destroy the session
         session_destroy();
-        header('Location: ../Practical_10_Secure_Login/login.php');
-        exit;
+
+        redirect('../Practical_10_Secure_Login/login.php');
     }
+
+    // Update the last activity time
     $_SESSION['last_activity'] = time();
 }
-function require_admin(): void
+
+
+// Allow only admin users to access a page
+function require_admin()
 {
+
     require_login();
-    if (($_SESSION['role'] ?? 'student') !== 'admin') {
-        http_response_code(403);
-        exit('403 Forbidden: administrator access required.');
+
+    if ($_SESSION['role'] != 'admin') {
+
+        die('Access denied! Admin only.');
     }
 }
-function log_action(mysqli $conn, int $studentId, string $action, string $details = ''): void
+
+
+// Save an important action in the audit log
+function log_action($conn, $studentId, $action, $details = '')
 {
-    try {
-        $ip = substr((string) ($_SERVER['REMOTE_ADDR'] ?? ''), 0, 45);
-        $s = $conn->prepare('INSERT INTO audit_logs (student_id, action, details, ip_address) VALUES (?,?,?,?)');
-        $s->bind_param('isss', $studentId, $action, $details, $ip);
-        $s->execute();
-        $s->close();
-    } catch (Throwable $e) { /* Logging must not break the primary action. */
-    }
+
+    $sql = "INSERT INTO audit_logs
+            (student_id, action, details, ip_address)
+            VALUES (?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+
+    $stmt->bind_param(
+        "isss",
+        $studentId,
+        $action,
+        $details,
+        $ip
+    );
+
+    $stmt->execute();
+
+    $stmt->close();
 }
+
+?>

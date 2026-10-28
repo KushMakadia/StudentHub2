@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,12 +17,10 @@
             <div class="logo-section">
                 <img src="logo.png" alt="StudentHub Logo" class="logo">
                 <h2 class="site-title">StudentHub</h2>
-            
-        <button class="menu-toggle"
-                aria-label="Open navigation menu"
-                aria-expanded="false">
-            ☰
-        </button>
+
+                <button class="menu-toggle" aria-label="Open navigation menu" aria-expanded="false">
+                    ☰
+                </button>
 
             </div>
             <nav class="navbar">
@@ -34,14 +33,12 @@
                 <a href="Events.html">Events</a>
                 <a href="Contact_Us.html">Contact Us</a>
                 <a href="About_Us.html">About Us</a>
-                <a href="Admin.html">Admin</a>
+                <a href="Admin.php">Admin</a>
             </nav>
 
-       <button id="theme-toggle"
-                class="theme-btn"
-                aria-label="Toggle light and dark theme">
-            🌙
-        </button>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle light and dark theme">
+                🌙
+            </button>
         </div>
     </header>
 
@@ -52,23 +49,32 @@
 
             <h1>Login to StudentHub</h1>
 
-            <form action="#" class="login-form">
+            <form action="login_process.php" method="POST" class="login-form">
+
+                <!-- Display errors dynamically if any occur -->
+                <script>
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if(urlParams.has('error')) {
+                        document.write('<p style="color: red; text-align: center; font-weight: bold; margin-bottom: 15px;">' + urlParams.get('error') + '</p>');
+                    }
+                </script>
 
                 <div class="form-group">
-                    <label for="usernm">Username</label>
-                    <input type="text" id="usernm" name="usernm" placeholder="Enter Username" required>
+                    <label for="email">Email Address</label>
+                    <!-- Universal placeholder for everyone -->
+                    <input type="email" id="email" name="email" placeholder="Enter your Registered Email" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="pwd">Password</label>
-                    <input type="password" id="pwd" name="pwd" placeholder="Enter Password" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter Password" required>
                 </div>
 
                 <button type="submit" class="btn">
                     Login
                 </button>
 
-            </form>
+            </form> 
 
         </section>
 
@@ -81,4 +87,5 @@
     </footer>
 
 </body>
+
 </html>

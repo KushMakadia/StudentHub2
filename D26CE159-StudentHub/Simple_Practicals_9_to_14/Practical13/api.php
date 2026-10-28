@@ -1,7 +1,0 @@
-<?php require '../config.php'; header('Content-Type: application/json');
-if($_SERVER['REQUEST_METHOD']==='GET') { $r=$conn->query('SELECT id,title,event_date,location FROM events ORDER BY id DESC'); echo json_encode($r->fetch_all(MYSQLI_ASSOC)); exit; }
-if(empty($_SESSION['id']) || ($_SESSION['role']??'')!=='admin') { http_response_code(403); echo json_encode(['message'=>'Admin login required']); exit; }
-$data=json_decode(file_get_contents('php://input'),true)??[];
-if($_SERVER['REQUEST_METHOD']==='POST') { $title=trim($data['title']??'');$date=$data['event_date']??'';$location=trim($data['location']??''); if($title===''||$date===''||$location===''){http_response_code(400);echo json_encode(['message'=>'Fill all fields']);exit;} $cat='General';$s=$conn->prepare('INSERT INTO events(title,category,event_date,location) VALUES(?,?,?,?)');$s->bind_param('ssss',$title,$cat,$date,$location);$s->execute();echo json_encode(['message'=>'Event added']);exit; }
-if($_SERVER['REQUEST_METHOD']==='DELETE') { $id=(int)($data['id']??0);$s=$conn->prepare('DELETE FROM events WHERE id=?');$s->bind_param('i',$id);$s->execute();echo json_encode(['message'=>'Delete request completed']);exit; }
-http_response_code(405); echo json_encode(['message'=>'Method not allowed']); ?>

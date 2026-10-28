@@ -1,0 +1,24 @@
+<?php require '../config.php';
+$msg = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email']);
+    $pass = $_POST['password'];
+    $s = $conn->prepare('SELECT student_id,name,email,password_hash,role FROM students WHERE email=?');
+    $s->bind_param('s', $email);
+    $s->execute();
+    $u = $s->get_result()->fetch_assoc();
+    if ($u && password_verify($pass, $u['password_hash'])) {
+        session_regenerate_id(true);
+        $_SESSION['id'] = $u['student_id'];
+        $_SESSION['name'] = $u['name'];
+        $_SESSION['role'] = $u['role'];
+        header('Location: ' . ($_SESSION['role'] === 'admin' ? '../Practical14/index.php' : 'dashboard.php'));
+        exit;
+    } else
+        $msg = 'Incorrect email or password.';
+}
+?>
+<h2>Practical 10: Login</h2>
+<form method="post"><input type="email" name="email" placeholder="Email" required><br><input type="password"
+        name="password" placeholder="Password" required><br><button>Login</button></form>
+<p><?= h($msg) ?></p><a href="../Practical9/register.php">Register</a>

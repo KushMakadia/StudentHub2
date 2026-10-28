@@ -1,0 +1,34 @@
+<?php require '../config.php';
+admin_only();
+function countRows($conn, $table)
+{
+    return (int) $conn->query("SELECT COUNT(*) FROM " . $table)->fetch_row()[0];
+}
+$students = countRows($conn, 'students');
+$events = countRows($conn, 'events');
+$regs = countRows($conn, 'registrations');
+$latest = $conn->query('SELECT name,email,role,created_at FROM students ORDER BY student_id DESC LIMIT 5'); ?>
+<h2>Practical 14: Admin Dashboard</h2>
+<p>Welcome <?= h($_SESSION['name']) ?></p>
+<ul>
+    <li>Students: <?= $students ?></li>
+    <li>Events: <?= $events ?></li>
+    <li>Registrations: <?= $regs ?></li>
+</ul>
+<h3>Admin menu</h3><a href="../Practical11/index.php">Manage students</a> | <a href="../Practical12/index.php">Manage
+    events</a> | <a href="../Practical13/index.html">Fetch API demo</a> | <a href="../Practical10/logout.php">Logout</a>
+<h3>Latest registrations</h3>
+<table border="1" cellpadding="6">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Date</th>
+    </tr><?php while ($r = $latest->fetch_assoc()): ?>
+        <tr>
+            <td><?= h($r['name']) ?></td>
+            <td><?= h($r['email']) ?></td>
+            <td><?= h($r['role']) ?></td>
+            <td><?= h($r['created_at']) ?></td>
+        </tr><?php endwhile; ?>
+</table>
